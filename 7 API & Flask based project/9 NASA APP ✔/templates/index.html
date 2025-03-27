@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA EPIC Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #0050b3;
+            margin-top: 20px;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .epic-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NASA EPIC Data Viewer</h1>
+        {% if EP is not none %}
+            <div id="data">
+                <!-- Loop through EPIC data and display it -->
+                {% for item in EP %}
+                <div class="epic-item">
+                    <p><strong>Identifier:</strong> {{ item.identifier }}</p>
+                    <p><strong>Caption:</strong> {{ item.caption }}</p>
+                    <p><strong>Date:</strong> {{ item.date }}</p>
+                    <p><strong>Image:</strong> {{ item.image }}</p>
+                    <p><strong>Coordinates:</strong> Lat {{ item.centroid_coordinates.lat }}, Lon {{ item.centroid_coordinates.lon }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="error">
+                <p>Error: Failed to load EPIC data</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

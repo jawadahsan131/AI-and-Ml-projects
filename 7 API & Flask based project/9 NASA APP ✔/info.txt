@@ -1,0 +1,2 @@
+API Key = "SRBcd2mqP3ooPJwI1bbMyB08zmBLVQ29OiShXb7t"
+API URL = "https://api.nasa.gov/EPIC/api/natural/images?api_key=DEMO_KEY"
