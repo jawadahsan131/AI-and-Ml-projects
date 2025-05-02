@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .chat-container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+        }
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            max-width: 75%;
+        }
+        .user-message {
+            background: #0084ff;
+            color: white;
+            text-align: right;
+            margin-left: auto;
+        }
+        .bot-message {
+            background: #e1e1e1;
+            text-align: left;
+        }
+        input {
+            width: 75%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background: #061727;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .suggestions {
+            margin-top: 20px;
+        }
+
+        .suggestions p {
+            margin-bottom: 10px;
+        }
+
+        .suggestions button {
+            margin: 5px;
+            padding: 8px 12px;
+            background-color: #020a17;
+            border: 1px solid #ff4141;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .suggestions button:hover {
+            background-color: #021532;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <div class="suggestions">
+        <p><strong>Try asking me:</strong></p>
+        <button onclick="fillSuggestion('What are the library hours?')">Library hours</button>
+        <button onclick="fillSuggestion('How can I become a member?')">Membership info</button>
+        <button onclick="fillSuggestion('Are there any upcoming events?')">Events/workshops</button>
+        <button onclick="fillSuggestion('Where is the library located?')">Library location</button>
+    </div>
+    
+
+
+    <script>
+        function sendMessage() {
+            let inputField = document.getElementById("user-input");
+            let userMessage = inputField.value;
+            inputField.value = "";
+
+            let chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div class="message user-message"><strong>You:</strong> ${userMessage}</div>`;
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatBox.innerHTML += `<div class="message bot-message"><strong>ChatBot:</strong> ${data.response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+ 
+        function fillSuggestion(text) {
+            document.getElementById("user-input").value = text;
+            sendMessage();
+        }
+
+
+    </script>
+</body>
+</html>
